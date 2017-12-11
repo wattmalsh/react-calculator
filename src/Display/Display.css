@@ -1,0 +1,15 @@
+.Display {
+  flex: 1 0 30%;
+  text-align: right;
+  padding: 20px;
+  width: 100%;
+}
+
+.input {
+  font-size: 48px;
+}
+
+.output {
+  font-size: 36px;
+  color: #708090;
+}

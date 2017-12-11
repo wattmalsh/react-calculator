@@ -1,0 +1,40 @@
+.Keypad {
+  flex: 5 1 70%;
+  display: flex;
+  flex-flow: row nowrap;
+  width: 100%;
+}
+
+@media not screen and (max-width: 600px) {
+  .Keypad {
+    width: 80%;
+    margin-bottom: 10%;
+  }
+}
+
+.nums, .cmds {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.nums {
+  flex-flow: row wrap-reverse;
+  flex: 3 1 auto;
+  background-color: #696969;
+}
+
+.cmds {
+  flex-flow: column nowrap;
+  flex: 1 1 auto;
+  background-color: #708090;
+}
+
+.num {
+  width: 33%;
+}
+
+.cmd {
+  margin: auto 0;
+}
