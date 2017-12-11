@@ -45,3 +45,7 @@
   height: 20%;
   width: 100%;
 }
+
+.num>div, .cmd>div {
+  pointer-events: none;
+}
