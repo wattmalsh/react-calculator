@@ -4,25 +4,37 @@ import './Keypad.css';
 class Keypad extends Component {
   constructor(props) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
+    this.nums = ['.', '0', '='].concat('123456789'.split(''));
+    this.cmds = ['DEL', '/', 'x', '-', '+'];
+    this.handleInput = this.handleInput.bind(this);
   }
 
-  handleClick(e) {
-    this.props.onUserInput(e.target.dataset.key);
+  handleInput(e) {
+    this.props.onUserInput(e.key || e.target.dataset.key);
+  }
+
+  componentDidMount() {
+    document.addEventListener('keypress', (e) => {
+      if (this.cmds.indexOf(e.key) !== -1 || this.nums.indexOf(e.key) !== -1) {
+        this.handleInput(e);
+      }
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace' || e.key === 'Enter') {
+        this.handleInput(e);
+      }
+    });
   }
 
   render() {
-    const { input, output, deleteKey } = this.props;
-    const del = deleteKey ? 'DEL' : 'CLR';
-    let cmds = [del, '%', 'x', '-', '+'];
-    cmds = cmds.map(cmd => (
-      <div className="cmd" data-key={cmd} key={cmd} onClick={this.handleClick}>
+    this.cmds[0] = this.props.deleteKey ? 'DEL' : 'CLR';
+    const cmds = this.cmds.map(cmd => (
+      <div className="cmd" data-key={cmd} key={cmd} onClick={this.handleInput}>
         <div>{cmd}</div>
       </div>
     ));
-    let nums = ['.', '0', '='].concat('123456789'.split(''));
-    nums = nums.map(num => (
-      <div className="num" data-key={num} key={num} onClick={this.handleClick}>
+    const nums = this.nums.map(num => (
+      <div className="num" data-key={num} key={num} onClick={this.handleInput}>
         <div>{num}</div>
       </div>
     ));
