@@ -16,7 +16,6 @@ class Calculator extends Component {
     this.insideSqrt = false;
     this.insideExpo = false;
     this.handleUserInput = this.handleUserInput.bind(this);
-    this.resetInput = this.resetInput.bind(this);
     this.calculateOutput = this.calculateOutput.bind(this);
   }
 
@@ -120,9 +119,6 @@ class Calculator extends Component {
     }
   }
 
-  resetInput() {
-    this.setState({ input: '' });
-  }
 
   calculateOutput() {
     let { input } = this.state;
