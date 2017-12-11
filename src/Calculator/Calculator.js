@@ -131,7 +131,6 @@ class Calculator extends Component {
       calculations.unshift(calculation);
     }
     this.setState({ calculations });
-    console.log(this.state.calculations)
   }
 
   calculateOutput() {
@@ -152,10 +151,12 @@ class Calculator extends Component {
   }
 
   render() {
-    const { input, output, deleteKey } = this.state;
+    const {
+      input, output, calculations, deleteKey,
+    } = this.state;
     return (
       <div className="Calculator">
-        <Display input={input} output={output} />
+        <Display input={input} output={output} calculations={calculations} />
         <Keypad deleteKey={deleteKey} onUserInput={this.handleUserInput} />
       </div>
     );
