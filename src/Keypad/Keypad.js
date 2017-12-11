@@ -5,7 +5,7 @@ class Keypad extends Component {
   constructor(props) {
     super(props);
     this.nums = ['.', '0', '='].concat('123456789'.split(''));
-    this.cmds = ['DEL', '/', 'x', '-', '+'];
+    this.cmds = ['DEL', '/', '*', '-', '+'];
     this.handleInput = this.handleInput.bind(this);
   }
 
@@ -27,7 +27,7 @@ class Keypad extends Component {
   }
 
   render() {
-    this.cmds[0] = this.props.deleteKey ? 'DEL' : 'CLR';
+    this.cmds[0] = this.props.deleteKey;
     const cmds = this.cmds.map(cmd => (
       <div className="cmd" data-key={cmd} key={cmd} onClick={this.handleInput}>
         <div>{cmd}</div>
