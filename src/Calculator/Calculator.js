@@ -10,6 +10,7 @@ class Calculator extends Component {
       input: '',
       output: '',
       deleteKey: 'DEL',
+      calculations: [],
     };
     this.countOperands = 0;
     this.dotAllowed = true;
@@ -17,6 +18,7 @@ class Calculator extends Component {
     this.insideExpo = false;
     this.handleUserInput = this.handleUserInput.bind(this);
     this.calculateOutput = this.calculateOutput.bind(this);
+    this.addToCalculations = this.addToCalculations.bind(this);
   }
 
   handleUserInput(key) {
@@ -81,6 +83,7 @@ class Calculator extends Component {
       this.calculateOutput();
     } else if (key === 'Enter') {
       if (OPS.indexOf(lastKey) === -1) {
+        this.addToCalculations(this.state.output);
         this.setState({ input: this.state.output });
         this.setState({ output: '', deleteKey: 'CLR' });
         this.countOperands = 0;
@@ -119,6 +122,17 @@ class Calculator extends Component {
     }
   }
 
+  addToCalculations(calculation) {
+    const calculations = this.state.calculations.slice();
+    if (calculations.length < 10) {
+      calculations.unshift(calculation);
+    } else {
+      calculations.pop();
+      calculations.unshift(calculation);
+    }
+    this.setState({ calculations });
+    console.log(this.state.calculations)
+  }
 
   calculateOutput() {
     let { input } = this.state;
