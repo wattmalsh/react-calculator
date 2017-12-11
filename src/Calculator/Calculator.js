@@ -14,6 +14,7 @@ class Calculator extends Component {
     this.countOperands = 0;
     this.dotAllowed = true;
     this.insideSqrt = false;
+    this.insideExpo = false;
     this.handleUserInput = this.handleUserInput.bind(this);
     this.resetInput = this.resetInput.bind(this);
     this.calculateOutput = this.calculateOutput.bind(this);
@@ -29,6 +30,7 @@ class Calculator extends Component {
     const DOT = '.';
     const OPS = ['/', '*', '+', '-'];
     const SQRT = '√';
+    const EXPO = '^';
 
     // Handle an empty original input
     if (original === '') {
@@ -71,6 +73,10 @@ class Calculator extends Component {
           this.insideSqrt = false;
           this.countOperands -= 1;
         }
+        if (lastKey === EXPO) {
+          this.insideExpo = false;
+          this.countOperands -= 1;
+        }
       }
       this.setState({ input: original.slice(0, original.length - 1) });
       this.calculateOutput();
@@ -85,6 +91,7 @@ class Calculator extends Component {
         this.countOperands += 1;
         this.dotAllowed = true;
         this.insideSqrt = false;
+        this.insideExpo = false;
         this.setState({ input: original + key });
       } else if (key === '-') {
         if (lastKey === '*' || lastKey === '/') {
@@ -95,6 +102,12 @@ class Calculator extends Component {
       if (!this.insideSqrt && OPS.indexOf(lastKey) !== -1) {
         this.setState({ input: original + key });
         this.insideSqrt = true;
+      }
+    } else if (key === EXPO) {
+      if (!this.insideExpo && OPS.indexOf(lastKey) === -1) {
+        this.setState({ input: original + key });
+        this.insideExpo = true;
+        this.countOperands += 1;
       }
     } else if (NUMS.indexOf(key) !== -1) {
       this.setState({ input: original + key });
@@ -114,12 +127,14 @@ class Calculator extends Component {
   calculateOutput() {
     let { input } = this.state;
     const lastKey = input[input.length - 1];
-    const OPS = ['/', '*', '+', '-', '√'];
+    const OPS = ['/', '*', '+', '-', '√', '^'];
     const DOT = '.';
     input = input.replace(/√(\d+)([-+/*]*)/g, 'Math.sqrt($1)$2');
+    input = input.replace(/([\d.]+)\^(\d+)([-+/*]*)/g, 'Math.pow($1,$2)$3');
     if (this.countOperands === 0) {
       this.setState({ output: '' });
     } else if (OPS.indexOf(lastKey) === -1 && lastKey !== DOT) {
+      console.log(input);
       this.setState({ output: eval(input) });
     } else {
       this.setState({ output: '' });

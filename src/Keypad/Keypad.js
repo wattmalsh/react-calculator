@@ -5,7 +5,7 @@ class Keypad extends Component {
   constructor(props) {
     super(props);
     this.nums = ['.', '0', '='].concat('123456789'.split(''));
-    this.cmds = ['DEL', '/', '*', '-', '+', '√'];
+    this.cmds = ['DEL', '/', '*', '-', '+', '√', '^'];
     this.handleInput = this.handleInput.bind(this);
   }
 
