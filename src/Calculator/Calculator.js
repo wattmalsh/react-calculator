@@ -10,7 +10,7 @@ class Calculator extends Component {
       input: '',
       output: '',
       deleteKey: 'DEL',
-      calculations: [],
+      calculations: JSON.parse(localStorage.getItem('calculations') || '[]'),
     };
     this.countOperands = 0;
     this.dotAllowed = true;
@@ -131,6 +131,7 @@ class Calculator extends Component {
       calculations.unshift(calculation);
     }
     this.setState({ calculations });
+    localStorage.setItem('calculations', JSON.stringify(calculations));
   }
 
   calculateOutput() {
