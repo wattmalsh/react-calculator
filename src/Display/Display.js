@@ -3,10 +3,11 @@ import './Display.css';
 
 class Display extends Component {
   render() {
+    const { input, output } = this.props;
     return (
       <div className="Display">
-        <div className="input" >1234</div>
-        <div className="output">1234</div>
+        <div className="input" >{input}</div>
+        <div className="output">{output}</div>
       </div>
     );
   }
