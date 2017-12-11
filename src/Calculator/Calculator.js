@@ -13,6 +13,7 @@ class Calculator extends Component {
     };
     this.countOperands = 0;
     this.dotAllowed = true;
+    this.insideSqrt = false;
     this.handleUserInput = this.handleUserInput.bind(this);
     this.resetInput = this.resetInput.bind(this);
     this.calculateOutput = this.calculateOutput.bind(this);
@@ -27,14 +28,19 @@ class Calculator extends Component {
     const NUMS = '0123456789'.split('');
     const DOT = '.';
     const OPS = ['/', '*', '+', '-'];
+    const SQRT = '√';
 
     // Handle an empty original input
     if (original === '') {
-      if (NONZEROS.indexOf(key) !== -1 || key === '-' || key === DOT) {
+      if (NONZEROS.indexOf(key) !== -1 || key === '-' || key === DOT || key === SQRT) {
         this.setState({ input: key });
       }
       if (key === DOT) {
         this.dotAllowed = false;
+      }
+      if (key === SQRT) {
+        this.insideSqrt = true;
+        this.countOperands = 1;
       }
 
     // Handle a 'CLR' state of calculator
@@ -61,6 +67,10 @@ class Calculator extends Component {
         if (lastKey === DOT) {
           this.dotAllowed = true;
         }
+        if (lastKey === SQRT) {
+          this.insideSqrt = false;
+          this.countOperands -= 1;
+        }
       }
       this.setState({ input: original.slice(0, original.length - 1) });
       this.calculateOutput();
@@ -74,11 +84,17 @@ class Calculator extends Component {
       if (OPS.indexOf(lastKey) === -1) {
         this.countOperands += 1;
         this.dotAllowed = true;
+        this.insideSqrt = false;
         this.setState({ input: original + key });
       } else if (key === '-') {
         if (lastKey === '*' || lastKey === '/') {
           this.setState({ input: original + key });
         }
+      }
+    } else if (key === SQRT) {
+      if (!this.insideSqrt && OPS.indexOf(lastKey) !== -1) {
+        this.setState({ input: original + key });
+        this.insideSqrt = true;
       }
     } else if (NUMS.indexOf(key) !== -1) {
       this.setState({ input: original + key });
@@ -96,14 +112,15 @@ class Calculator extends Component {
   }
 
   calculateOutput() {
-    const { input } = this.state;
+    let { input } = this.state;
     const lastKey = input[input.length - 1];
-    const OPS = ['/', '*', '+', '-'];
+    const OPS = ['/', '*', '+', '-', '√'];
     const DOT = '.';
+    input = input.replace(/√(\d+)([-+/*]*)/g, 'Math.sqrt($1)$2');
     if (this.countOperands === 0) {
       this.setState({ output: '' });
     } else if (OPS.indexOf(lastKey) === -1 && lastKey !== DOT) {
-      this.setState({ output: eval(this.state.input) });
+      this.setState({ output: eval(input) });
     } else {
       this.setState({ output: '' });
     }
