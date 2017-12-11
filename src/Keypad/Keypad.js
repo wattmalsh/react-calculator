@@ -16,11 +16,15 @@ class Keypad extends Component {
     const del = deleteKey ? 'DEL' : 'CLR';
     let cmds = [del, '%', 'x', '-', '+'];
     cmds = cmds.map(cmd => (
-      <div className="cmd" data-key={cmd} key={cmd} onClick={this.handleClick}>{cmd}</div>
+      <div className="cmd" data-key={cmd} key={cmd} onClick={this.handleClick}>
+        <div>{cmd}</div>
+      </div>
     ));
-    let nums = [',', '0', '='].concat('123456789'.split(''));
+    let nums = ['.', '0', '='].concat('123456789'.split(''));
     nums = nums.map(num => (
-      <div className="num" data-key={num} key={num} onClick={this.handleClick}>{num}</div>
+      <div className="num" data-key={num} key={num} onClick={this.handleClick}>
+        <div>{num}</div>
+      </div>
     ));
     return (
       <div className="Keypad">
